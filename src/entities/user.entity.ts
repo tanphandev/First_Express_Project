@@ -9,7 +9,8 @@ import {
   BaseEntity,
   OneToMany,
 } from "typeorm";
-import { Length, IsNotEmpty } from "class-validator";
+import { Length, IsNotEmpty, IsEmail, Matches, IsDate } from "class-validator";
+import * as bcrypt from "bcrypt";
 import Post from "./post.entity";
 import Article from "./article.entity";
 import Comment from "./comment.entity";
@@ -17,32 +18,42 @@ import Comment from "./comment.entity";
 @Entity("User")
 @Unique(["email"])
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  public id!: number;
+  constructor() {
+    super();
+    this.username = null;
+    this.createAt = new Date();
+    this.updateAt = new Date();
+  }
+  @PrimaryGeneratedColumn("uuid")
+  public id!: string;
+
+  @Column({ type: "varchar", nullable: true })
+  public username: string | null;
 
   @Column()
-  username!: string;
+  @IsEmail()
+  public email!: string;
 
-  @Column()
-  email!: string;
-
-  @Column()
-  password!: string;
+  @Column({ select: false })
+  @Length(8, 20, { message: "Password must be between 8 and 20 characters" })
+  @Matches(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{8,}$/, {
+    message:
+      "Password must contain at least one uppercase letter, one lowercase letter, one number.",
+  })
+  public password!: string;
 
   @Column()
   @CreateDateColumn({
     type: "timestamp",
-    default: () => "CURRENT_TIMESTAMP(6)",
   })
-  createAt!: Date;
+  public createAt!: Date;
 
   @Column()
   @UpdateDateColumn({
     type: "timestamp",
-    default: () => "CURRENT_TIMESTAMP(6)",
     onUpdate: "CURRENT_TIMESTAMP(6)",
   })
-  updateAt!: Date;
+  public updateAt!: Date;
 
   /* relationship */
   @OneToMany(() => Post, (post) => post.user)
@@ -53,4 +64,16 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Comment, (comment) => comment.user)
   public comments!: Comment[];
+
+  /* encrypt password */
+  public encryptPassword = async () => {
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(this.password, salt);
+    console.log(">>hash", hash);
+    this.password = hash;
+  };
+
+  public checkPassword = (password: string) => {
+    return bcrypt.compare(password, this.password);
+  };
 }

@@ -1,5 +1,6 @@
 import { User } from "../../entities/user.entity";
 import { dataSource } from "../../config/database/dataSource";
+import { validate } from "class-validator";
 
 class UserService {
   constructor(private userRepository = dataSource.getRepository(User)) {}
@@ -7,31 +8,34 @@ class UserService {
     try {
       return await this.userRepository.find({});
     } catch (e: any) {
-      console.log("error", e);
       throw new Error(e);
     }
   }
 
-  async getOneBy(id: number): Promise<User | null> {
+  async findOneUserbyEmail(email: string): Promise<User | null> {
     try {
-      return await this.userRepository.findOne({
+      const user = await this.userRepository.findOne({
         where: {
-          id: id,
+          email: email,
         },
+        select: ["id", "password"],
       });
+      if (user) {
+        return user;
+      }
+      return null;
     } catch (e: any) {
-      console.log("error", e);
-      throw new Error(e);
+      throw e;
     }
   }
 
-  //   public async add(data: any): Promise<User> {
-  //     try {
-  //       return;
-  //     } catch (e: any) {
-  //       throw new Error(e);
-  //     }
-  //   }
+  async createNewUser(newUser: User) {
+    try {
+      return await this.userRepository.save(newUser);
+    } catch (e: any) {
+      throw e;
+    }
+  }
 }
 
 export default UserService;
