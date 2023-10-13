@@ -1,7 +1,6 @@
 import { IsNotEmpty } from "class-validator";
 import {
   BaseEntity,
-  BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
@@ -15,8 +14,8 @@ import Article from "./article.entity";
 
 @Entity("Comment")
 class Comment extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  public id!: number;
+  @PrimaryGeneratedColumn("uuid")
+  public id!: string;
 
   @Column()
   @IsNotEmpty()

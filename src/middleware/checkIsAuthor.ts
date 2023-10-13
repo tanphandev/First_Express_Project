@@ -7,6 +7,9 @@ import PostService from "../app/services/post.service";
 import { postResponse } from "../HTTP/response/post.response";
 import ArticleService from "../app/services/article.service";
 import Article from "../entities/article.entity";
+import Comment from "../entities/comment.entity";
+import CommentService from "../app/services/comment.service";
+import { commentResponse } from "../HTTP/response/comment.response";
 
 const checkIsAuthorPost = async (
   req: IRequest,
@@ -19,7 +22,7 @@ const checkIsAuthorPost = async (
   try {
     currentPost = await new PostService().getPostById(postId);
   } catch (e: any) {
-    return res.status(clientErrorCode.NotFound).json(postResponse.NotFound);
+    return res.status(clientErrorCode.NotFound).json(postResponse.NotFound());
   }
 
   if (currentPost.user.id === currentUserId) {
@@ -48,7 +51,7 @@ const checkIsAuthorArticle = async (
   try {
     currentArticle = await new ArticleService().getArticleById(articleId);
   } catch (e: any) {
-    return res.status(clientErrorCode.NotFound).json(postResponse.NotFound);
+    return res.status(clientErrorCode.NotFound).json(postResponse.NotFound());
   }
 
   if (currentArticle.author.id === currentUserId) {
@@ -66,4 +69,34 @@ const checkIsAuthorArticle = async (
   }
 };
 
-export { checkIsAuthorPost, checkIsAuthorArticle };
+const checkIsAuthorComment = async (
+  req: IRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id: currentUserId } = req.payloadJWT;
+  const commentId = req.params.id;
+  let currentComment: Comment;
+  try {
+    currentComment = await new CommentService().getCommentById(commentId);
+  } catch (e: any) {
+    return res
+      .status(clientErrorCode.NotFound)
+      .json(commentResponse.NotFound());
+  }
+
+  if (currentComment.user.id === currentUserId) {
+    next();
+  } else {
+    return res
+      .status(clientErrorCode.Unauthorized)
+      .json(
+        templateResponse.error(
+          "you are not allowed for this operations, you is not author this comment",
+          "Unauthorized",
+          clientErrorCode.Unauthorized
+        )
+      );
+  }
+};
+export { checkIsAuthorPost, checkIsAuthorArticle, checkIsAuthorComment };

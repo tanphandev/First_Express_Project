@@ -1,16 +1,16 @@
 import { NextFunction, Request, Response } from "express";
-import PostService from "../services/post.service";
-import successStatusCode from "../../HTTP/status_code/success.status-code";
-import templateResponse from "../../HTTP/response/template.response";
-import { ServerException } from "../../utils/customError";
-import { clientErrorCode } from "../../HTTP/status_code/error.status-code";
-import { userResponse } from "../../HTTP/response/user.response";
-import Post from "../../entities/post.entity";
 import { ValidationError, validate } from "class-validator";
-import { IRequest } from "../../interface/http.interface";
-import { User } from "../../entities/user.entity";
+import PostService from "../services/post.service";
 import UserService from "../services/user.service";
+import successStatusCode from "../../HTTP/status_code/success.status-code";
+import { clientErrorCode } from "../../HTTP/status_code/error.status-code";
+import { ServerException } from "../../utils/customError";
+import templateResponse from "../../HTTP/response/template.response";
+import { userResponse } from "../../HTTP/response/user.response";
 import { postResponse } from "../../HTTP/response/post.response";
+import { User } from "../../entities/user.entity";
+import Post from "../../entities/post.entity";
+import { IRequest } from "../../interface/http.interface";
 
 const postService = new PostService();
 class PostController {

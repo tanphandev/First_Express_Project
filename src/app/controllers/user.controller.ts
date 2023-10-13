@@ -1,15 +1,15 @@
 import { NextFunction, Request, Response } from "express";
+import { validate } from "class-validator";
 import UserService from "../services/user.service";
 import templateResponse from "../../HTTP/response/template.response";
+import authResponse from "../../HTTP/response/auth.response";
+import { userResponse } from "../../HTTP/response/user.response";
+import { clientErrorCode } from "../../HTTP/status_code/error.status-code";
+import successStatusCode from "../../HTTP/status_code/success.status-code";
 import { ServerException } from "../../utils/customError";
 import { User } from "../../entities/user.entity";
-import { validate } from "class-validator";
-import authResponse from "../../HTTP/response/auth.response";
-import { clientErrorCode } from "../../HTTP/status_code/error.status-code";
-import { userResponse } from "../../HTTP/response/user.response";
-import successStatusCode from "../../HTTP/status_code/success.status-code";
+
 import { IRequest } from "../../interface/http.interface";
-import { dataSource } from "../../config/database/dataSource";
 
 const userService = new UserService();
 class UserController {

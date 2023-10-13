@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import authResponse from "../../HTTP/response/auth.response";
-import { clientErrorCode } from "../../HTTP/status_code/error.status-code";
-import UserService from "../services/user.service";
 import templateResponse from "../../HTTP/response/template.response";
-import { User } from "../../entities/user.entity";
-import config from "../../config/environment/config";
+import { clientErrorCode } from "../../HTTP/status_code/error.status-code";
 import successStatusCode from "../../HTTP/status_code/success.status-code";
+import { User } from "../../entities/user.entity";
+import UserService from "../services/user.service";
+import config from "../../config/environment/config";
 
 const userService = new UserService();
 class AuthController {
