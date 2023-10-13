@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -14,31 +15,38 @@ import Comment from "./comment.entity";
 
 @Entity("Post")
 class Post extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  public id!: number;
+  constructor() {
+    super();
+    this.title = "";
+    this.url = "";
+    this.text = "";
+    this.createAt = new Date();
+    this.updateAt = new Date();
+  }
+
+  @PrimaryGeneratedColumn("uuid")
+  public id!: string;
 
   @Column()
   @IsNotEmpty()
-  public title!: string;
+  public title: string;
 
   @Column()
   public url!: string;
 
   @Column()
+  @IsNotEmpty()
   public text!: string;
 
   @Column()
   @CreateDateColumn({
     type: "timestamp",
-    default: () => "CURRENT_TIMESTAMP(6)",
   })
   public createAt!: Date;
 
   @Column()
   @UpdateDateColumn({
     type: "timestamp",
-    default: () => "CURRENT_TIMESTAMP(6)",
-    onUpdate: "CURRENT_TIMESTAMP(6)",
   })
   updateAt!: Date;
 

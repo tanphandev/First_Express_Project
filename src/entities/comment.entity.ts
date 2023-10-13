@@ -33,14 +33,8 @@ class Comment extends BaseEntity {
   @UpdateDateColumn({
     type: "timestamp",
     default: () => "CURRENT_TIMESTAMP(6)",
-    onUpdate: "CURRENT_TIMESTAMP(6)",
   })
   public updateAt!: Date;
-
-  @BeforeUpdate()
-  updateTimestamp() {
-    this.updateAt = new Date();
-  }
 
   /* relationship */
   @ManyToOne(() => User, (user) => user.comments, {

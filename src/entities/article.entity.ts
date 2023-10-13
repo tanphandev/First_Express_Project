@@ -15,21 +15,17 @@ import Comment from "./comment.entity";
 
 @Entity("Article")
 class Article extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  public id!: number;
-
-  @Column()
-  @IsNotEmpty()
-  public slug!: string;
+  @PrimaryGeneratedColumn("uuid")
+  public id!: string;
 
   @Column()
   @IsNotEmpty()
   public title!: string;
 
-  @Column({ default: "default description" })
+  @Column({ default: "" })
   public description!: string;
 
-  @Column({ default: "default content" })
+  @Column({ default: "" })
   public body!: string;
 
   @Column("simple-array")
@@ -53,14 +49,8 @@ class Article extends BaseEntity {
   @UpdateDateColumn({
     type: "timestamp",
     default: () => "CURRENT_TIMESTAMP(6)",
-    onUpdate: "CURRENT_TIMESTAMP(6)",
   })
   updateAt!: Date;
-
-  @BeforeUpdate()
-  updateTimestamp() {
-    this.updateAt = new Date();
-  }
 
   /* relationship */
   @ManyToOne(() => User, (user) => user.articles)

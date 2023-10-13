@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(logger.getRequestLogger());
 
 /* api routes */
-app.use("/api", apiRoute);
+app.use("/api/v1", apiRoute);
 
 /* get request error */
 // app.use(logger.getRequestErrorLogger());

@@ -51,7 +51,6 @@ export class User extends BaseEntity {
   @Column()
   @UpdateDateColumn({
     type: "timestamp",
-    onUpdate: "CURRENT_TIMESTAMP(6)",
   })
   public updateAt!: Date;
 

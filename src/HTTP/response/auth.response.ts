@@ -23,7 +23,20 @@ const authResponse = {
       clientErrorCode.Unauthorized
     );
   },
-
+  TokenNotProvided() {
+    return templateResponse.error(
+      "Auth token not provided",
+      "Unauthorized",
+      clientErrorCode.Unauthorized
+    );
+  },
+  InvalidTokenProvided() {
+    return templateResponse.error(
+      "Invalid token provided",
+      "Unauthorized",
+      clientErrorCode.Unauthorized
+    );
+  },
   userAlreadyExist() {
     return templateResponse.error(
       "Sorry, this email already exists 😿",
