@@ -1,6 +1,6 @@
 import EventEmitter from "events";
 import { Logger } from "../../lib/logger";
-import { dataSource } from "../../config/database/dataSource";
+import { dataSource } from "../../../ormconfig";
 
 class DatabaseService {
   public static isConnected: boolean = false;

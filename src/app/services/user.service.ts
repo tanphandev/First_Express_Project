@@ -1,5 +1,5 @@
 import { User } from "../../entities/user.entity";
-import { dataSource } from "../../config/database/dataSource";
+import { dataSource } from "../../../ormconfig";
 import { validate } from "class-validator";
 import { DeleteResult, UpdateResult } from "typeorm";
 

@@ -1,5 +1,5 @@
 import { DeleteResult, UpdateResult } from "typeorm";
-import { dataSource } from "../../config/database/dataSource";
+import { dataSource } from "../../../ormconfig";
 import Post from "../../entities/post.entity";
 
 class PostService {

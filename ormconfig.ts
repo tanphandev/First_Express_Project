@@ -1,5 +1,7 @@
+import { DataSource, DataSourceOptions } from "typeorm";
 import config from "./src/config/environment/config";
-module.exports = {
+
+const connectionConfig: DataSourceOptions = {
   type: "mysql",
   port: config["DB_PORT"],
   host: config["DB_HOST"],
@@ -7,9 +9,9 @@ module.exports = {
   password: config["DB_PASSWORD"],
   database: config["DB_NAME"],
   entities: ["src/entities/*.entity.ts"],
-  migrations: ["src/database/migrations/*.ts"],
-  cli: {
-    migrationsDir: "src/database/migrations",
-  },
-  synchronize: true,
+  migrations: ["src/migrations/*.ts"],
+  migrationsTableName: "history",
+  logging: true,
+  synchronize: false,
 };
+export const dataSource = new DataSource(connectionConfig);
